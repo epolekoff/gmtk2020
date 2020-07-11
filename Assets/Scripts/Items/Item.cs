@@ -10,6 +10,9 @@ public class Item : MonoBehaviour
 
     private const float TimeBeforePickupAfterDrop = 5f;
 
+    protected Hand m_heldHand;
+    protected float m_itemCooldownTimer = 0f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +23,18 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (m_itemCooldownTimer > 0)
+        {
+            m_itemCooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Check if already held.
+    /// </summary>
+    public bool IsHeld()
+    {
+        return m_heldHand != null;
     }
 
     /// <summary>
@@ -28,6 +42,8 @@ public class Item : MonoBehaviour
     /// </summary>
     public void GrabItem(Hand heldHand)
     {
+        m_heldHand = heldHand;
+
         // Set this item to be held by the hand.
         transform.SetParent(heldHand.ItemBone.transform);
 
@@ -58,13 +74,23 @@ public class Item : MonoBehaviour
     /// </summary>
     public void DropItem()
     {
+        m_heldHand = null;
+
         // Drop it.
         transform.SetParent(null);
 
         // Turn on the rigidbody.
         Rigidbody.isKinematic = false;
 
+        // Fire the event.
+        OnDropped();
+
         StartCoroutine(CountdownUntilCanBePickedUpAfterDropping());
+    }
+
+    protected virtual void OnDropped()
+    {
+
     }
 
     /// <summary>

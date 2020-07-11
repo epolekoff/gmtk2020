@@ -54,4 +54,12 @@ public class SpeechBubble : MonoBehaviour
 
         Text.maxVisibleCharacters = maxCharacters;
     }
+
+    /// <summary>
+    /// Is all the text shown.
+    /// </summary>
+    public bool IsComplete()
+    {
+        return Text.maxVisibleCharacters == Text.textInfo.characterCount;
+    }
 }

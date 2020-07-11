@@ -17,6 +17,7 @@ public class PlayerCharacter : MonoBehaviour
     public Transform RotatingRoot;
     public List<Hand> Hands;
     public List<Transform> HandRestingBones;
+    public GameObject BloodFX;
 
     private const float GroundCheckDistance = 0.1f;
 
@@ -26,6 +27,8 @@ public class PlayerCharacter : MonoBehaviour
     private Vector3 m_jumpVelocity;
     private Vector3 m_movementVelocity;
     private int m_handItemIndex = 0;
+    private int m_health = 3;
+    private bool m_isDead = false;
 
     //=================================================
     // Unity Functions
@@ -50,6 +53,11 @@ public class PlayerCharacter : MonoBehaviour
     /// </summary>
     void Update()
     {
+        if(m_isDead)
+        {
+            return;
+        }
+
         CheckGround();
         HandleInput();
     }
@@ -59,8 +67,13 @@ public class PlayerCharacter : MonoBehaviour
     /// </summary>
     void OnTriggerEnter(Collider col)
     {
+        if(m_isDead)
+        {
+            return;
+        }
+
         Item item = col.GetComponentInParent<Item>();
-        if (item != null)
+        if (item != null && !item.IsHeld())
         {
             OnApproachItem(item);
         }
@@ -329,5 +342,32 @@ public class PlayerCharacter : MonoBehaviour
         hand.transform.localPosition = Vector3.zero;
         hand.transform.localRotation = Quaternion.identity;
         hand.CurrentState = HandState.Resting;
+    }
+
+    /// <summary>
+    /// Hit by bullet.
+    /// </summary>
+    public void OnHitByBullet(Vector3 direction)
+    {
+        // Play some blood.
+        BloodFX.SetActive(true);
+        BloodFX.GetComponent<ParticleSystem>().Play();
+
+        // Check if dead.
+        m_health--;
+        if (m_health <= 0)
+        {
+            Die();
+            Ragdoll.AddForce(direction.normalized * 500f);
+        }
+    }
+
+    /// <summary>
+    /// Die
+    /// </summary>
+    public void Die()
+    {
+        m_isDead = true;
+        Ragdoll.SetEnabled(true);
     }
 }

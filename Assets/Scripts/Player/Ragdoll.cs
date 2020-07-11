@@ -29,4 +29,15 @@ public class Ragdoll : MonoBehaviour
             c.enabled = enabled;
         }
     }
+
+    /// <summary>
+    /// Add force.
+    /// </summary>
+    public void AddForce(Vector3 force)
+    {
+        foreach(Rigidbody r in Rigidbodies)
+        {
+            r.AddForce(force);
+        }
+    }
 }

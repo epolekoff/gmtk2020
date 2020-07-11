@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public bool WasNPCKilled = false;
+
     // Start is called before the first frame update
     void Start()
     {
