@@ -255,12 +255,10 @@ public class PlayerCharacter : MonoBehaviour
             return;
         }
 
-        Debug.Log("OnApproachItem: " + handToGrabItem.Index);
-
         // Check if the hands are holding anything.
-        if (Hands[m_handItemIndex].IsHoldingItem())
+        if (handToGrabItem.IsHoldingItem())
         {
-            Hands[m_handItemIndex].DropItem();
+            handToGrabItem.DropItem();
         }
 
         // Start trying to grab the item.

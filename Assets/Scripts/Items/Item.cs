@@ -32,7 +32,7 @@ public class Item : MonoBehaviour
         transform.SetParent(heldHand.ItemBone.transform);
 
         // Move the item such that the Grab Point is at the center of the hand.
-        transform.localPosition = GrabPoint.transform.localPosition - transform.localPosition;
+        transform.localPosition = Vector3.zero - GrabPoint.localPosition;
         transform.localRotation = Quaternion.identity;
 
         // Disable the pickup range collider.
