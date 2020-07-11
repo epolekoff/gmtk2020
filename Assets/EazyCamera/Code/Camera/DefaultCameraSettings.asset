@@ -15,11 +15,11 @@ MonoBehaviour:
   OffsetHeight: 2
   LateralOffset: 0
   MaxLateralOffset: 10
-  OffsetDistance: 9.666667
-  MaxDistance: 20
+  OffsetDistance: 6
+  MaxDistance: 25
   MinDistance: 2
   ZoomSpeed: 30
   ResetSpeed: 50
   RotateSpeed: 75
   MaxRotX: 89
-  MinRotX: -90
+  MinRotX: -20

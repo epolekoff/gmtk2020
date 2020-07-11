@@ -18,3 +18,5 @@ MonoBehaviour:
   AirMoveSpeed: 80
   Friction: 0.1
   MaxVelocity: 5
+  ItemGrabRange: 5
+  ItemGrabLerpTime: 0.25

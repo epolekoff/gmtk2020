@@ -15,7 +15,8 @@ public class PlayerCharacter : MonoBehaviour
     public PlayerData PlayerData;
     public EzCamera PlayerCamera;
     public Transform RotatingRoot;
-
+    public List<Hand> Hands;
+    public List<Transform> HandRestingBones;
 
     private const float GroundCheckDistance = 0.1f;
 
@@ -24,6 +25,7 @@ public class PlayerCharacter : MonoBehaviour
     private bool m_isJumpSquatting;
     private Vector3 m_jumpVelocity;
     private Vector3 m_movementVelocity;
+    private int m_handItemIndex = 0;
 
     //=================================================
     // Unity Functions
@@ -35,6 +37,12 @@ public class PlayerCharacter : MonoBehaviour
     void Start()
     {
         Ragdoll.SetEnabled(false);
+
+        for(int i = 0; i < Hands.Count; i++)
+        {
+            Hands[i].Index = i;
+        }
+
     }
 
     /// <summary>
@@ -44,6 +52,18 @@ public class PlayerCharacter : MonoBehaviour
     {
         CheckGround();
         HandleInput();
+    }
+
+    /// <summary>
+    /// Trigger checks.
+    /// </summary>
+    void OnTriggerEnter(Collider col)
+    {
+        Item item = col.GetComponentInParent<Item>();
+        if (item != null)
+        {
+            OnApproachItem(item);
+        }
     }
 
     //=================================================
@@ -91,7 +111,8 @@ public class PlayerCharacter : MonoBehaviour
             Animator.SetBool("Running", true);
 
             // Keep the player facing forward while running
-            RotatingRoot.LookAt(RotatingRoot.transform.position + m_movementVelocity, Vector3.up);
+            Vector3 newForward = Vector3.RotateTowards(RotatingRoot.transform.forward, m_movementVelocity, 0.1f, 0.1f);
+            RotatingRoot.LookAt(RotatingRoot.transform.position + newForward, Vector3.up);
         }
         else
         {
@@ -184,5 +205,131 @@ public class PlayerCharacter : MonoBehaviour
     private int GetGroundLayerMask()
     {
         return LayerMask.GetMask(new[] { "Ground" });
+    }
+
+    //-------------------------------------------------------------------
+    /// <summary>
+    /// Get the next hand.
+    /// </summary>
+    /// <returns></returns>
+    private Hand GetNextAvailableHand()
+    {
+        Hand handToGrabItem = Hands[m_handItemIndex];
+
+        // Check if the hand can grab this item.
+        if (!handToGrabItem.CanGrabNewItem())
+        {
+            // Try the other hand.
+            AdvanceHandIndex();
+            handToGrabItem = Hands[m_handItemIndex];
+            if (!handToGrabItem.CanGrabNewItem())
+            {
+                return null;
+            }
+        }
+
+        // Increment the index again for next time.
+        AdvanceHandIndex();
+        return handToGrabItem;
+    }
+
+    //-------------------------------------------------------------------
+    private void AdvanceHandIndex()
+    {
+        m_handItemIndex++;
+        if(m_handItemIndex == Hands.Count)
+        {
+            m_handItemIndex = 0;
+        }
+    }
+
+    //-------------------------------------------------------------------
+    /// <summary>
+    /// When approaching an item, do something.
+    /// </summary>
+    private void OnApproachItem(Item item)
+    {
+        Hand handToGrabItem = GetNextAvailableHand();
+        if (handToGrabItem == null)
+        {
+            return;
+        }
+
+        Debug.Log("OnApproachItem: " + handToGrabItem.Index);
+
+        // Check if the hands are holding anything.
+        if (Hands[m_handItemIndex].IsHoldingItem())
+        {
+            Hands[m_handItemIndex].DropItem();
+        }
+
+        // Start trying to grab the item.
+        StartCoroutine(GrabItem(handToGrabItem, item));
+    }
+
+    /// <summary>
+    /// Move the hand to grab the item.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GrabItem(Hand hand, Item item)
+    {
+        hand.CurrentState = HandState.MovingToItem;
+
+        // Kill all momentum.
+        hand.SetPhysicsEnabled(false);
+
+        // Move the hand towards the item.
+        Vector3 handStartPosition = hand.transform.position;
+        float grabTimer = 0;
+        while (grabTimer < PlayerData.ItemGrabLerpTime)
+        {
+            // If the player leaves range, break out entirely.
+            if(Vector3.Distance(transform.position, item.GrabPoint.position) > PlayerData.ItemGrabRange)
+            {
+                hand.CurrentState = HandState.Free;
+                hand.SetPhysicsEnabled(false);
+                yield break;
+            }
+
+            grabTimer += Time.deltaTime;
+            float t = grabTimer / PlayerData.ItemGrabLerpTime;
+
+            // Move the hand using physics, to knock things out of the way.
+            hand.transform.position = Vector3.Lerp(handStartPosition, item.GrabPoint.position, t);
+
+            yield return null;
+        }
+
+        // If the hand is not close to the item, give up.
+        if(Vector3.Distance(hand.transform.position, item.GrabPoint.position) > 0.5f)
+        {
+            hand.CurrentState = HandState.Free;
+            hand.SetPhysicsEnabled(false);
+            yield break;
+        }
+
+        // Grab the item.
+        item.GrabItem(hand);
+
+        // Move the hand back, with the item.
+        hand.CurrentState = HandState.MovingToPosition;
+        handStartPosition = hand.transform.position;
+        grabTimer = 0;
+        while (grabTimer < PlayerData.ItemGrabLerpTime)
+        {
+            grabTimer += Time.deltaTime;
+            float t = grabTimer / PlayerData.ItemGrabLerpTime;
+
+            // Move the hand using physics, to knock things out of the way.
+            hand.transform.position = Vector3.Lerp(handStartPosition, HandRestingBones[hand.Index].position, t);
+
+            yield return null;
+        }
+        
+        // Move the hand into the bone.
+        hand.transform.SetParent(HandRestingBones[hand.Index]);
+        hand.transform.localPosition = Vector3.zero;
+        hand.transform.localRotation = Quaternion.identity;
+        hand.CurrentState = HandState.Resting;
     }
 }

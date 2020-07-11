@@ -12,4 +12,7 @@ public class PlayerData : ScriptableObject
     public float AirMoveSpeed = 1f;
     public float Friction = 1f;
     public float MaxVelocity = 30f;
+
+    public float ItemGrabRange = 3f;
+    public float ItemGrabLerpTime = 0.5f;
 }
