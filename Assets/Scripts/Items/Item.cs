@@ -8,6 +8,8 @@ public class Item : MonoBehaviour
     public Collider PickUpRange;
     public Rigidbody Rigidbody;
 
+    public bool IsButton;
+
     public bool Consumed { get; set; }
 
     private const float TimeBeforePickupAfterDrop = 5f;
@@ -42,8 +44,14 @@ public class Item : MonoBehaviour
     /// <summary>
     /// Grab item.
     /// </summary>
-    public void GrabItem(Hand heldHand)
+    public bool GrabItem(Hand heldHand)
     {
+        if(IsButton)
+        {
+            PushButton(heldHand);
+            return false;
+        }
+
         m_heldHand = heldHand;
 
         // Set this item to be held by the hand.
@@ -64,6 +72,8 @@ public class Item : MonoBehaviour
 
         // Fire the event.
         OnGrabbed();
+
+        return true;
     }
 
     protected virtual void OnGrabbed()
@@ -91,6 +101,14 @@ public class Item : MonoBehaviour
     }
 
     protected virtual void OnDropped()
+    {
+
+    }
+
+    /// <summary>
+    /// Push a button instead of grabbing an item.
+    /// </summary>
+    protected virtual void PushButton(Hand hand)
     {
 
     }

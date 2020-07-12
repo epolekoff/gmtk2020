@@ -5,9 +5,23 @@ using UnityEngine;
 public class AggroTrigger : MonoBehaviour
 {
     public List<NPC> aggroNPCs;
+    bool aggro = false;
 
-    void OnTriggerEnter(Collider col)
+    void OnTriggerStay(Collider col)
     {
+        // Check if anyone died.
+        if (!GameManager.Instance.WasNPCKilled)
+        {
+            return;
+        }
+
+        if(aggro)
+        {
+            return;
+        }
+        Debug.Log("Aggro!");
+
+        // Get the player and aggro the npcs.
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();
         if (pc != null)
         {
@@ -17,6 +31,7 @@ public class AggroTrigger : MonoBehaviour
             }
 
             Destroy(this.gameObject);
+            aggro = true;
         }
 
     }

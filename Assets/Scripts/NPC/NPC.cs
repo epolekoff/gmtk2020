@@ -166,7 +166,7 @@ public class NPC : MonoBehaviour, ISlashable
         Gun.PickUpRange.enabled = false;
         Ragdoll.Animator.Play("Gun", 0);
 
-        if(SpeechText_NPCDied != string.Empty)
+        if(SpeechBubble != null && SpeechText_NPCDied != string.Empty)
         {
             SpeechBubble.ShowTimedPopup(UnityEngine.Random.Range(0f, 8f), SpeechText_NPCDied);
         }

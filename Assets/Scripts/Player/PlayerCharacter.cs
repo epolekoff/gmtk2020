@@ -253,6 +253,16 @@ public class PlayerCharacter : MonoBehaviour
     }
 
     //-------------------------------------------------------------------
+    private void RollBackHandIndex()
+    {
+        m_handItemIndex--;
+        if (m_handItemIndex < 0)
+        {
+            m_handItemIndex = Hands.Count-1;
+        }
+    }
+
+    //-------------------------------------------------------------------
     private void AdvanceHandIndex()
     {
         m_handItemIndex++;
@@ -304,7 +314,7 @@ public class PlayerCharacter : MonoBehaviour
             if(Vector3.Distance(transform.position, item.GrabPoint.position) > PlayerData.ItemGrabRange)
             {
                 hand.CurrentState = HandState.Free;
-                hand.SetPhysicsEnabled(false);
+                hand.SetPhysicsEnabled(true);
                 yield break;
             }
 
@@ -321,12 +331,21 @@ public class PlayerCharacter : MonoBehaviour
         if(Vector3.Distance(hand.transform.position, item.GrabPoint.position) > 0.5f)
         {
             hand.CurrentState = HandState.Free;
-            hand.SetPhysicsEnabled(false);
+            hand.SetPhysicsEnabled(true);
             yield break;
         }
 
         // Grab the item.
-        item.GrabItem(hand);
+        bool itemGrabbed = item.GrabItem(hand);
+
+        // If a button was pushed or the grab failed, free up the hand.
+        if(!itemGrabbed)
+        {
+            hand.CurrentState = HandState.Free;
+            hand.SetPhysicsEnabled(true);
+            RollBackHandIndex();
+            yield break;
+        }
 
         // Move the hand back, with the item.
         hand.CurrentState = HandState.MovingToPosition;

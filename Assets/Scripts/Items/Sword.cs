@@ -30,13 +30,18 @@ public class Sword : Item
     protected override void OnGrabbed()
     {
         SlashRange.enabled = true;
-        Destroy(SwordGlow);
+        m_isSlashing = false;
+        if (SwordGlow != null)
+        {
+            Destroy(SwordGlow);
+        }
     }
 
     protected override void OnDropped()
     {
         SlashRange.enabled = false;
         StopAllCoroutines();
+        m_isSlashing = false;
     }
 
     void OnTriggerStay(Collider col)
