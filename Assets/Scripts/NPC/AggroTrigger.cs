@@ -19,7 +19,6 @@ public class AggroTrigger : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Aggro!");
 
         // Get the player and aggro the npcs.
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();

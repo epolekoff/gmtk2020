@@ -13,7 +13,7 @@ public class Gun : Item
     private const float HeldGunHeight = 1f;
     private const float HeldGunDistance = 3f;
 
-    private int m_numShotsRemaining = 10;
+    private int m_numShotsRemaining = 15;
 
     void Start()
     {
@@ -34,6 +34,8 @@ public class Gun : Item
 
         // Make the bullet move.
         newBullet.GetComponent<Bullet>().Fire(direction);
+
+        AudioManager.Instance.PlayShootSound();
     }
 
     /// <summary>
@@ -41,6 +43,7 @@ public class Gun : Item
     /// </summary>
     protected override void OnGrabbed()
     {
+        AudioManager.Instance.PlaySound(AudioManager.Instance.GunPickupSound);
         StartCoroutine(PlayerUseGunCoroutine());
     }
 

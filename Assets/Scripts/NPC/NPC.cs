@@ -92,7 +92,9 @@ public class NPC : MonoBehaviour, ISlashable
         }
 
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();
-        if (pc != null)
+        Hand handInCollider = col.gameObject.GetComponentInParent<Hand>();
+        if (pc != null &&
+            handInCollider == null)
         {
             SpeechBubble.Show(false, "");
         }
@@ -135,14 +137,18 @@ public class NPC : MonoBehaviour, ISlashable
     /// <summary>
     /// Kill the NPC.
     /// </summary>
-    public void Die()
+    public void Die(bool otherNpcsCare = true)
     {
         if(!m_alive)
         {
             return;
         }
         m_alive = false;
-        GameManager.Instance.WasNPCKilled = true;
+
+        if (otherNpcsCare)
+        {
+            GameManager.Instance.WasNPCKilled = true;
+        }
 
         Ragdoll.SetEnabled(true);
         Ragdoll.gameObject.transform.SetParent(null);
@@ -168,7 +174,7 @@ public class NPC : MonoBehaviour, ISlashable
 
         if(SpeechBubble != null && SpeechText_NPCDied != string.Empty)
         {
-            SpeechBubble.ShowTimedPopup(UnityEngine.Random.Range(0f, 8f), SpeechText_NPCDied);
+            SpeechBubble.ShowTimedPopup(UnityEngine.Random.Range(0f, 6f), SpeechText_NPCDied);
         }
     }
 }

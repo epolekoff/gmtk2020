@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class KillPlane : MonoBehaviour
 {
+    /// <summary>
+    /// Trigger death.
+    /// </summary>
     void OnTriggerEnter(Collider col)
     {
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();
@@ -11,6 +14,5 @@ public class KillPlane : MonoBehaviour
         {
             pc.Die();
         }
-
     }
 }

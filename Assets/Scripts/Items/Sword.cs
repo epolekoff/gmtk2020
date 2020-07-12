@@ -35,6 +35,8 @@ public class Sword : Item
         {
             Destroy(SwordGlow);
         }
+
+        AudioManager.Instance.PlaySound(AudioManager.Instance.SwordPickupSound);
     }
 
     protected override void OnDropped()
@@ -81,6 +83,8 @@ public class Sword : Item
         {
             return;
         }
+
+        AudioManager.Instance.PlaySound(AudioManager.Instance.SwordSwingSound);
 
         m_isSlashing = true;
         m_heldHand.CurrentState = HandState.UsingItem;

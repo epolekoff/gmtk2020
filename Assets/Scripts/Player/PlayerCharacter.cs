@@ -165,6 +165,8 @@ public class PlayerCharacter : MonoBehaviour
         yield return new WaitForSeconds(PlayerData.DelayBeforeJump);
         Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, PlayerData.JumpVelocity, Rigidbody.velocity.z);
         m_isJumpSquatting = false;
+
+        AudioManager.Instance.PlaySound(AudioManager.Instance.JumpSound);
     }
 
     //-------------------------------------------------------------------

@@ -13,10 +13,12 @@ public class PushOffBridge : Item
     /// </summary>
     protected override void PushButton(Hand hand)
     {
-        NpcToPushOffBridge.Die();
+        NpcToPushOffBridge.Die(otherNpcsCare: false);
 
         // Get the push vector.
         Vector3 handToNpc = transform.position - hand.transform.position;
         NpcToPushOffBridge.Ragdoll.AddForce(handToNpc.normalized * PushForce);
+
+        Destroy(gameObject, 3f);
     }
 }

@@ -12,7 +12,9 @@ public class VictoryTrigger : MonoBehaviour
     void OnTriggerEnter(Collider col)
     {
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();
-        if (pc != null)
+        Hand hand = col.gameObject.GetComponentInParent<Hand>();
+        if (pc != null &&
+            hand == null)
         {
             Victory();
         }

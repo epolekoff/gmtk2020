@@ -28,6 +28,7 @@ public class SpeechBubble : MonoBehaviour
         // Set the text.
         if(shown)
         {
+            AudioManager.Instance.PlaySound(AudioManager.Instance.SpeechBubbleAppearSound);
             StartCoroutine(SetTextOverTime(newText));
         }
 
@@ -55,6 +56,7 @@ public class SpeechBubble : MonoBehaviour
 
         m_isShowing = true;
         Animator.SetTrigger("Show");
+        AudioManager.Instance.PlaySound(AudioManager.Instance.SpeechBubbleAppearSound);
         yield return SetTextOverTime(text);
 
         yield return new WaitForSeconds(DelayAfterShowingTimedPopup);
@@ -75,6 +77,7 @@ public class SpeechBubble : MonoBehaviour
 
         while (shownCharacters <= maxCharacters)
         {
+            AudioManager.Instance.PlayTextAppearSound();
             Text.maxVisibleCharacters = shownCharacters;
             shownCharacters++;
             yield return new WaitForSeconds(CharacterSpeed);
