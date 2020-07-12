@@ -15,8 +15,9 @@ public class AggroTrigger : MonoBehaviour
             {
                 npc.DrawGun(pc);
             }
+
+            Destroy(this.gameObject);
         }
 
-        Destroy(this.gameObject);
     }
 }

@@ -65,7 +65,9 @@ public class Bullet : MonoBehaviour
 
         // Hit a Player, deal damage.
         PlayerCharacter hitPlayer = col.gameObject.GetComponentInParent<PlayerCharacter>();
-        if (hitPlayer != null)
+        //Hand hitHand = col.gameObject.GetComponentInParent<Hand>();
+        if (hitPlayer != null /*&& 
+            hitHand == null*/)// Hands cannot take damage
         {
             hitPlayer.OnHitByBullet(transform.forward);
         }

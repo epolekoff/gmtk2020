@@ -75,7 +75,7 @@ public class NPC : MonoBehaviour, ISlashable
         }
 
         PlayerCharacter pc = col.GetComponentInParent<PlayerCharacter>();
-        if (pc != null && SpeechText != String.Empty)
+        if (pc != null && SpeechText != String.Empty && m_aggroPlayerCharacter == null)
         {
             SpeechBubble.Show(true, SpeechText);
         }
@@ -165,5 +165,10 @@ public class NPC : MonoBehaviour, ISlashable
         Gun.Rigidbody.isKinematic = true;
         Gun.PickUpRange.enabled = false;
         Ragdoll.Animator.Play("Gun", 0);
+
+        if(SpeechText_NPCDied != string.Empty)
+        {
+            SpeechBubble.ShowTimedPopup(UnityEngine.Random.Range(0f, 8f), SpeechText_NPCDied);
+        }
     }
 }

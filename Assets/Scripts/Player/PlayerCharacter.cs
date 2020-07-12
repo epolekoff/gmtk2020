@@ -28,7 +28,7 @@ public class PlayerCharacter : MonoBehaviour
     private Vector3 m_jumpVelocity;
     private Vector3 m_movementVelocity;
     private int m_handItemIndex = 0;
-    private int m_health = 3;
+    private int m_health = 5;
     private bool m_isDead = false;
 
     //=================================================
@@ -74,7 +74,7 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         Item item = col.GetComponentInParent<Item>();
-        if (item != null && !item.IsHeld())
+        if (item != null && !item.IsHeld() && !item.Consumed)
         {
             OnApproachItem(item);
         }

@@ -8,6 +8,8 @@ public class Item : MonoBehaviour
     public Collider PickUpRange;
     public Rigidbody Rigidbody;
 
+    public bool Consumed { get; set; }
+
     private const float TimeBeforePickupAfterDrop = 5f;
 
     protected Hand m_heldHand;

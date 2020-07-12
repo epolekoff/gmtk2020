@@ -10,6 +10,7 @@ public class SpeechBubble : MonoBehaviour
     private bool m_isShowing = false;
 
     private const float CharacterSpeed = 0.05f;
+    private const float DelayAfterShowingTimedPopup = 2f;
 
     /// <summary>
     /// Show or hide,
@@ -32,6 +33,33 @@ public class SpeechBubble : MonoBehaviour
 
         // Play animation to show or hide.
         Animator.SetTrigger(shown ? "Show" : "Hide");
+    }
+
+    /// <summary>
+    /// Show with some delays. Delete after delay.
+    /// </summary>
+    public void ShowTimedPopup(float delayBeforeShowing, string text)
+    {
+        StartCoroutine(ShowTimedPopupCoroutine(delayBeforeShowing, text));
+    }
+
+    /// <summary>
+    /// Show the popup
+    /// </summary>
+    /// <param name="delayBeforeShowing"></param>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    private IEnumerator ShowTimedPopupCoroutine(float delayBeforeShowing, string text)
+    {
+        yield return new WaitForSeconds(delayBeforeShowing);
+
+        m_isShowing = true;
+        Animator.SetTrigger("Show");
+        yield return SetTextOverTime(text);
+
+        yield return new WaitForSeconds(DelayAfterShowingTimedPopup);
+
+        Show(false, "");
     }
 
     /// <summary>
