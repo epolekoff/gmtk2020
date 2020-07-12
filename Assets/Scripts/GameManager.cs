@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public bool WasNPCKilled = false;
+    public GameCanvas GameCanvas;
+
+    public bool WasNPCKilled { get; set; }
+
+    private bool m_isGameOver;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Cursor stuff.
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        GameCanvas.ShowGameplay();
     }
 
     // Update is called once per frame
@@ -22,5 +24,27 @@ public class GameManager : Singleton<GameManager>
         {
             Application.Quit();
         }
+    }
+
+    /// <summary>
+    /// Player died.
+    /// </summary>
+    public void PlayerDied()
+    {
+        if(m_isGameOver)
+        {
+            return;
+        }
+        m_isGameOver = true;
+
+        GameCanvas.ShowGameOver();
+    }
+
+    /// <summary>
+    /// Reload the game.
+    /// </summary>
+    public void Restart()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 }

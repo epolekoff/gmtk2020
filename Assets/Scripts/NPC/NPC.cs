@@ -152,7 +152,7 @@ public class NPC : MonoBehaviour, ISlashable
         // Drop the gun.
         Gun.transform.SetParent(null);
         Gun.Rigidbody.isKinematic = false;
-        Gun.HeldByNPC = false;
+        Gun.PickUpRange.enabled = true;
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ public class NPC : MonoBehaviour, ISlashable
         m_aggroPlayerCharacter = playerCharacter;
         Gun.gameObject.SetActive(true);
         Gun.Rigidbody.isKinematic = true;
-        Gun.HeldByNPC = true;
+        Gun.PickUpRange.enabled = false;
         Ragdoll.Animator.Play("Gun", 0);
     }
 }

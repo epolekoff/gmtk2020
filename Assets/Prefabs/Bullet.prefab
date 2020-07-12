@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 12.173, y: 12.173002, z: 12.173002}
   m_Children: []
   m_Father: {fileID: 3780948637123921091}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!96 &3289096042373354627
 TrailRenderer:
@@ -167,7 +167,7 @@ Transform:
   m_LocalScale: {x: 12.173, y: 12.173001, z: 12.173001}
   m_Children: []
   m_Father: {fileID: 3780948637123921091}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3289096042694075259
 MeshFilter:
@@ -246,9 +246,9 @@ Transform:
   m_LocalPosition: {x: -7.1372004, y: 1.263, z: 37.422}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 8335062823522875152}
   - {fileID: 3289096042692777733}
   - {fileID: 3289096042373354624}
-  - {fileID: 8335062823522875152}
   - {fileID: 8489184338337136486}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -328,7 +328,7 @@ Transform:
   m_Children:
   - {fileID: 4693098535044152243}
   m_Father: {fileID: 3780948637123921091}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -180, y: 89.99999, z: -90}
 --- !u!198 &9045835850163461265
 ParticleSystem:
@@ -405,7 +405,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 0
+  scalingMode: 1
   randomSeed: 0
   InitialModule:
     serializedVersion: 3

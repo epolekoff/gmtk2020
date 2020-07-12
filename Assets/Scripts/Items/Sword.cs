@@ -5,6 +5,7 @@ using UnityEngine;
 public class Sword : Item
 {
     public Collider SlashRange;
+    public float SlashRangeRadius = 3;
     public GameObject SwordGlow;
 
     private const float SlashArcOffsetFromTarget = 2f;
@@ -35,6 +36,7 @@ public class Sword : Item
     protected override void OnDropped()
     {
         SlashRange.enabled = false;
+        StopAllCoroutines();
     }
 
     void OnTriggerStay(Collider col)
@@ -47,6 +49,12 @@ public class Sword : Item
 
         // Cannot slash twice.
         if (m_isSlashing)
+        {
+            return;
+        }
+
+        // Must be within range.
+        if (Vector3.Distance(col.transform.position, transform.position) > SlashRangeRadius)
         {
             return;
         }
@@ -64,6 +72,11 @@ public class Sword : Item
 
     private void StartSlash(ISlashable target)
     {
+        if(this == null || m_heldHand == null || !IsHeld())
+        {
+            return;
+        }
+
         m_isSlashing = true;
         m_heldHand.CurrentState = HandState.UsingItem;
         StartCoroutine(SlashCoroutine(target));

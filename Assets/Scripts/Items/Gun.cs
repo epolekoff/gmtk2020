@@ -8,8 +8,6 @@ public class Gun : Item
     public Transform BulletSpawnPosition;
     public GameObject FireFX;
 
-    public bool HeldByNPC { get; set; }
-
     void Start()
     {
         

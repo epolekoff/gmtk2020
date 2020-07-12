@@ -18,6 +18,7 @@ public class PlayerCharacter : MonoBehaviour
     public List<Hand> Hands;
     public List<Transform> HandRestingBones;
     public GameObject BloodFX;
+    public bool IsMenuCharacter;
 
     private const float GroundCheckDistance = 0.1f;
 
@@ -89,6 +90,11 @@ public class PlayerCharacter : MonoBehaviour
     /// </summary>
     private void HandleInput()
     {
+        if (IsMenuCharacter)
+        {
+            return;
+        }
+
         Vector2 moveVector = new Vector2(PlayerInput.GetAxis("Horizontal"), PlayerInput.GetAxis("Vertical"));
 
         // Add force based on the camera facing direction.
@@ -369,5 +375,16 @@ public class PlayerCharacter : MonoBehaviour
     {
         m_isDead = true;
         Ragdoll.SetEnabled(true);
+        GameManager.Instance.PlayerDied();
+        PlayerCamera.SetOrbitEnabled(false);
+        PlayerCamera.enabled = false;
+
+        foreach (Hand hand in Hands)
+        {
+            hand.DropItem();
+            hand.SetPhysicsEnabled(true);
+            hand.CurrentState = HandState.Free;
+            hand.transform.SetParent(null);
+        }
     }
 }
