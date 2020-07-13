@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
         // This should speed it up.
         if(FPSCounter.Instance.IsLegitimate() && FPSCounter.Instance.CurrentFps < 20)
         {
-            SetPostProcessingActive(false);
+            //SetPostProcessingActive(false);
         }
     }
 
