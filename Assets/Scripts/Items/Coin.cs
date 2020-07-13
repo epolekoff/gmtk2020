@@ -19,6 +19,8 @@ public class Coin : Item
         // Make the hand drop the coin.
         m_heldHand.DropItem();
 
+        AudioManager.Instance.PlaySound(AudioManager.Instance.CoinSpendSound);
+
         // Destroy the coin.
         Destroy(gameObject);
     }

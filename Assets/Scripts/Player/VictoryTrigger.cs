@@ -31,5 +31,6 @@ public class VictoryTrigger : MonoBehaviour
         }
 
         GameManager.Instance.GameCanvas.ShowVictory();
+        AudioManager.Instance.PlaySound(AudioManager.Instance.VictorySound);
     }
 }

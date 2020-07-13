@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GameManager : Singleton<GameManager>
 {
     public GameCanvas GameCanvas;
+    public PostProcessVolume PostProcessing;
 
     public bool WasNPCKilled { get; set; }
 
@@ -23,6 +25,13 @@ public class GameManager : Singleton<GameManager>
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+
+        // If framerate dips too much, turn off post processing.
+        // This should speed it up.
+        if(FPSCounter.Instance.IsLegitimate() && FPSCounter.Instance.CurrentFps < 20)
+        {
+            SetPostProcessingActive(false);
         }
     }
 
@@ -46,5 +55,13 @@ public class GameManager : Singleton<GameManager>
     public void Restart()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    /// <summary>
+    /// Enable or disable post processing.
+    /// </summary>
+    public void SetPostProcessingActive(bool active)
+    {
+        PostProcessing.enabled = active;
     }
 }

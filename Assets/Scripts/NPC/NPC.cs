@@ -132,6 +132,8 @@ public class NPC : MonoBehaviour, ISlashable
         Ragdoll.AddForce(direction.normalized * SlashForce);
         DeathFX.SetActive(true);
         DeathFX.GetComponent<ParticleSystem>().Play();
+
+        //AudioManager.Instance.PlayMaleDeathSound();
     }
 
     /// <summary>

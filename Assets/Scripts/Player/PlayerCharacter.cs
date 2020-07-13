@@ -175,6 +175,11 @@ public class PlayerCharacter : MonoBehaviour
     /// </summary>
     private void CheckGround()
     {
+        if(IsMenuCharacter)
+        {
+            return;
+        }
+
         // Don't check if you're on the ground when moving upwards.
         if (Rigidbody.velocity.y > 0.001f)
         {
@@ -215,8 +220,14 @@ public class PlayerCharacter : MonoBehaviour
     /// </summary>
     private void OnLand()
     {
+        if(IsMenuCharacter)
+        {
+            return;
+        }
+
         // Update the animator
         Animator.SetBool("OnGround", true);
+        AudioManager.Instance.PlayLandSound();
     }
 
     //-------------------------------------------------------------------

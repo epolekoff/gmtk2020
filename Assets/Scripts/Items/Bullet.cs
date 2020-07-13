@@ -61,6 +61,7 @@ public class Bullet : MonoBehaviour
         if (hitNPC != null)
         {
             hitNPC.OnSlashed(transform.forward);
+            AudioManager.Instance.PlaySound(AudioManager.Instance.HitWithBulletSound);
         }
 
         // Hit a Player, deal damage.
@@ -70,6 +71,7 @@ public class Bullet : MonoBehaviour
             hitHand == null*/)// Hands cannot take damage
         {
             hitPlayer.OnHitByBullet(transform.forward);
+            AudioManager.Instance.PlaySound(AudioManager.Instance.HitWithBulletSound);
         }
     }
 }

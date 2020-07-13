@@ -10,10 +10,16 @@ public class AudioManager : Singleton<AudioManager>
     public AudioClip GunPickupSound;
     public AudioClip JumpSound;
     public AudioClip CoinPickupSound;
+    public AudioClip CoinSpendSound;
     public AudioClip SpeechBubbleAppearSound;
+    public AudioClip PushOffBridgeSound;
+    public AudioClip HitWithBulletSound;
+    public AudioClip VictorySound;
 
     public List<AudioClip> ShootSounds;
     public List<AudioClip> TextAppearSounds;
+    public List<AudioClip> MaleDeathSounds;
+    public List<AudioClip> LandSounds;
 
     private List<AudioSource> Sources = new List<AudioSource>();
     private const int MaxSources = 10;
@@ -44,6 +50,24 @@ public class AudioManager : Singleton<AudioManager>
     {
         int index = Random.Range(0, TextAppearSounds.Count);
         PlaySound(TextAppearSounds[index]);
+    }
+
+    /// <summary>
+    /// Play a shoot sound.
+    /// </summary>
+    public void PlayLandSound()
+    {
+        int index = Random.Range(0, LandSounds.Count);
+        PlaySound(LandSounds[index]);
+    }
+
+    /// <summary>
+    /// Play a shoot sound.
+    /// </summary>
+    public void PlayMaleDeathSound()
+    {
+        int index = Random.Range(0, MaleDeathSounds.Count);
+        PlaySound(MaleDeathSounds[index]);
     }
 
     /// <summary>

@@ -19,6 +19,8 @@ public class PushOffBridge : Item
         Vector3 handToNpc = transform.position - hand.transform.position;
         NpcToPushOffBridge.Ragdoll.AddForce(handToNpc.normalized * PushForce);
 
+        AudioManager.Instance.PlaySound(AudioManager.Instance.PushOffBridgeSound);
+
         Destroy(gameObject, 3f);
     }
 }
